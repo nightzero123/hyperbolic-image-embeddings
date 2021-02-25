@@ -7,12 +7,9 @@ import numpy as np
 import torch
 from scipy.special import gamma
 
-
 def tanh(x, clamp=15):
     return x.clamp(-clamp, clamp).tanh()
 
-
-# +
 class Artanh(torch.autograd.Function):
     @staticmethod
     def forward(ctx, x):
@@ -25,7 +22,6 @@ class Artanh(torch.autograd.Function):
     def backward(ctx, grad_output):
         (input,) = ctx.saved_tensors
         return grad_output / (1 - input ** 2)
-
 
 class RiemannianGradient(torch.autograd.Function):
 
@@ -44,9 +40,7 @@ class RiemannianGradient(torch.autograd.Function):
         scale = (1 - RiemannianGradient.c * x.pow(2).sum(-1, keepdim=True)).pow(2) / 4
         return grad_output * scale
 
-
 # -
-
 
 class Arsinh(torch.autograd.Function):
     @staticmethod
@@ -94,14 +88,12 @@ def project(x, *, c=1.0):
     c = torch.as_tensor(c).type_as(x)
     return _project(x, c)
 
-
 def _project(x, c):
     norm = torch.clamp_min(x.norm(dim=-1, keepdim=True, p=2), 1e-5)
     maxnorm = (1 - 1e-3) / (c ** 0.5)
     cond = norm > maxnorm
     projected = x / norm * maxnorm
     return torch.where(cond, projected, x)
-
 
 def lambda_x(x, *, c=1.0, keepdim=False):
     r"""
@@ -123,7 +115,6 @@ def lambda_x(x, *, c=1.0, keepdim=False):
     """
     c = torch.as_tensor(c).type_as(x)
     return _lambda_x(x, c, keepdim=keepdim)
-
 
 def _lambda_x(x, c, keepdim: bool = False):
     return 2 / (1 - c * x.pow(2).sum(-1, keepdim=keepdim))
@@ -445,7 +436,6 @@ def k2p(x, c):
 
 def lorenz_factor(x, *, c=1.0, dim=-1, keepdim=False):
     """
-
     Parameters
     ----------
     x : tensor

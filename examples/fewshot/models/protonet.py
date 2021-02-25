@@ -53,7 +53,6 @@ class ProtoNet(nn.Module):
             logits = (
                 -dist_matrix(data_query, proto, c=self.e2p.c) / self.args.temperature
             )
-
         else:
             if self.training:
                 proto = proto.reshape(self.args.shot, self.args.way, -1).mean(dim=0)

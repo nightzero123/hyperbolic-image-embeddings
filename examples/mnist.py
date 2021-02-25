@@ -34,7 +34,6 @@ class Net(nn.Module):
         x = self.tp(x)
         return F.log_softmax(self.mlr(x, c=self.tp.c), dim=-1)
 
-
 def train(args, model, device, train_loader, optimizer, epoch):
     model.train()
     for batch_idx, (data, target) in enumerate(train_loader):
@@ -128,14 +127,12 @@ def main():
         metavar="N",
         help="how many batches to wait before logging training status",
     )
-
     parser.add_argument(
         "--save-model",
         action="store_true",
         default=False,
         help="For Saving the current Model",
     )
-
     parser.add_argument(
         "--c", type=float, default=1.0, help="Curvature of the Poincare ball"
     )
@@ -163,6 +160,7 @@ def main():
     device = torch.device("cuda" if use_cuda else "cpu")
 
     kwargs = {"num_workers": 1, "pin_memory": True} if use_cuda else {}
+    # configure dataset
     train_loader = torch.utils.data.DataLoader(
         datasets.MNIST(
             "../data",

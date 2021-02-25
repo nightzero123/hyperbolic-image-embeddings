@@ -1,5 +1,7 @@
 import argparse
 import os.path as osp
+import sys
+sys.path.append("..")
 
 import numpy as np
 import torch
@@ -62,7 +64,7 @@ if __name__ == "__main__":
 
     if torch.cuda.is_available():
         print("CUDA IS AVAILABLE")
-    #     set_gpu(args.gpu)
+    # set_gpu(args.gpu)
 
     if args.save_path is None:
         save_path1 = "-".join([args.dataset, "ProtoNet"])
